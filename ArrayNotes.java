@@ -1,3 +1,4 @@
+import java.util.GregorianCalendar;
 
 /**
  * Notes for the Arrays Unit.
@@ -39,6 +40,28 @@ public class ArrayNotes{
 
         for (int i = 0; i <= odds.length; i++) {
             System.out.println(i + ": " + odds[i]);
+        }
+    }
+
+    public static void createArrayOfCalendars() {
+        /*
+
+        Create an array of 12 calendars, each calendar initialized ot the start of each month.
+
+        When we create an array of objects, each element is initialized to null. We have to explicitly create new objects and assign to each element.
+
+         */
+
+        GregorianCalendar[] calendars = new GregorianCalendar[12];
+
+        /*
+
+        At this point, every element in the array has a value of null.
+
+         */
+
+        for (GregorianCalendar calendar : calendars) {
+            System.out.println(calendar);
         }
     }
 
