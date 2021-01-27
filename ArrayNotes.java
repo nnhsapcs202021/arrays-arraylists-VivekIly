@@ -63,6 +63,32 @@ public class ArrayNotes{
         for (GregorianCalendar calendar : calendars) {
             System.out.println(calendar);
         }
+        
+        /*
+         * Create a new calendar object and assign it to each element in the array. 
+         * 
+         */
+        
+        for (int i = 0; i < calendars.length; i++) {
+            calendars[i] = new GregorianCalendar(2021, i + 1, 1);
+        }
+        
+        for (GregorianCalendar calendar : calendars) {
+            System.out.println(calendar);
+        }
+        
+        /*
+         * An enhanced for loop cannot modify the values of the elements in the array (.g., references to calendars), but we can call 
+         *      mutator methods which midify the properties fo the referenced objects (e.g., day of the month).
+         */
+        
+        for (GregorianCalendar calendar : calendars) {
+            calendar.add(GregorianCalendar.DAY_OF_MONTH, 2);
+        }
+        
+        for (GregorianCalendar calendar : calendars) {
+            System.out.println(calendar);
+        }
     }
 
     public static void main(String[] args) {
