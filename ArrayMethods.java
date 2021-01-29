@@ -44,11 +44,7 @@ public class ArrayMethods {
             int lessIndex = this.values[i - 1];
             int moreIndex = this.values[i + 1];
 
-            if (lessIndex > moreIndex) {
-                this.values[i] = lessIndex;
-            } else {
-                this.values[i] = moreIndex;
-            }
+            this.values[i] = Math.max(lessIndex, moreIndex);
         }
     }
 
@@ -58,15 +54,13 @@ public class ArrayMethods {
 
             int[] temp = new int[this.values.length - 2];
 
-            for (int i = 0; i < temp.length; i++) {
-                int index = 0;
-                if (i != middle || i != middle + 1) {
-                    index = i;
-                    temp[i] = this.values[index];
-                } else {
-                    index++;
+            int index = 0;
+            for (int i = 0; i < this.values.length; i++) {
+                if (i != middle && i != middle + 1) {
+                    temp[index] = this.values[i]; index++;
                 }
             }
+            this.values = temp;
         } else {
             int middle = (this.values.length / 2);
 
@@ -81,7 +75,119 @@ public class ArrayMethods {
                     index++;
                 }
             }
+            this.values = temp;
         }
+    }
+
+    public void evensToFront() {
+        for (int i = 1; i < this.values.length; i++) {
+            if (this.values[i] % 2 == 0) {
+                int num = this.values[i];
+                for (int j = 0; j < i; j++) {
+                    this.values[i - j] = this.values[i - j - 1];
+                }
+                this.values[0] = num;
+            }
+        }
+
+        int indexOfLastEven = -1;
+        for (int i = 0; i < this.values.length; i++) {
+            if (this.values[i] % 2 == 0) {
+                indexOfLastEven = i;
+            }
+        }
+
+        int[] evensSubArray = new int[indexOfLastEven + 1];
+        if (indexOfLastEven >= 0) System.arraycopy(this.values, 0, evensSubArray, 0, indexOfLastEven + 1);
+
+        int[] reverseArray = new int[evensSubArray.length];
+
+        for (int i = 0; i < evensSubArray.length; i++) {
+            reverseArray[reverseArray.length - i - 1] = evensSubArray[i];
+        }
+
+        int[] returnArray = new int[this.values.length];
+        System.arraycopy(reverseArray, 0, returnArray, 0, reverseArray.length);
+
+        if (this.values.length - (indexOfLastEven + 1) >= 0)
+            System.arraycopy(this.values, indexOfLastEven + 1, returnArray, indexOfLastEven + 1, this.values.length - (indexOfLastEven + 1));
+
+        this.values = returnArray;
+    }
+
+    public int secondLargest() {
+        int largest = Integer.MIN_VALUE;
+        int secondLargest = Integer.MIN_VALUE;
+
+        for (int value : this.values) {
+            if (value > largest) {
+                largest = value;
+            }
+        }
+
+        for (int value : this.values) {
+            if (value > secondLargest && value < largest) {
+                secondLargest = value;
+            }
+        }
+
+        return secondLargest;
+    }
+
+    public boolean isSorted() {
+        boolean isSorted = true;
+
+        for (int i = 1; i < this.values.length; i++) {
+            if (this.values[i] < this.values[i - 1]) {
+                isSorted = false;
+                break;
+            }
+        }
+
+        return isSorted;
+    }
+
+    public boolean hasAdjacentDuplicate() {
+        boolean hasAD = false;
+
+        for (int i = 1; i < this.values.length - 1; i++) {
+            int higherValue = this.values[i - 1];
+            int lowerValue = this.values[i + 1];
+
+            if (this.values[i] == higherValue || this.values[i] == lowerValue) {
+                hasAD = true;
+                break;
+            }
+        }
+
+        return hasAD;
+    }
+
+    public boolean hasDuplicate() {
+        boolean hasD = false;
+
+        int[] existing = new int[this.values.length];
+
+        Arrays.fill(existing, Integer.MIN_VALUE);
+
+        int index = 0;
+        for (int value : this.values) {
+            boolean add = true;
+            for (int i = 0; i < existing.length; i++) {
+                if (value == existing[i]) {
+                    add = false;
+                }
+            }
+
+            if (add) {
+                existing[index] = value;
+                index++;
+            } else {
+                hasD = true;
+            }
+        }
+
+        return hasD;
     }
 
     public static void main(String[] args) {
@@ -91,7 +197,7 @@ public class ArrayMethods {
         tester.swapFirstAndLast();
         tester.printArray();
 
-        testValues = new int[]{1, 6, 3, 9, 5, 6 /* add your own values */};
+        testValues = new int[]{1, 6, 3, 9, 5, 6 /* add your own values */ };
         tester = new ArrayMethods(testValues);
         tester.printArray();
         tester.shiftRight();
@@ -107,6 +213,17 @@ public class ArrayMethods {
         testValues = new int[]{1, 6, 3, 9, 5, 6 /* add your own values */};
         tester.removeMiddle();
         tester.printArray();
+
+        testValues = new int[]{1, 6, 3, 9, 5, 8, 10, 12 /* add your own values */};
+        tester = new ArrayMethods(testValues);
+        tester.evensToFront();
+        tester.printArray();
+
+        testValues = new int[]{1, 2, 3, 4, 5, 6 /* add your own values */};
+        tester = new ArrayMethods(testValues);
+
+        System.out.println(tester.hasDuplicate());
+
 
 
     }
